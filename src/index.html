@@ -1,19 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+<html>
+
 <body>
-    <div class="sticky">
-        <canvas id="hero-lightpass"></canvas>
-        <div class="overlay">
-          <h1 id="herotext"></h1>
-        </div>
-      </div>
-    <script src="scripts.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Flow+Rounded&family=M+PLUS+Rounded+1c&family=Redacted+Script:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Redacted Script', sans-serif;
+      font-weight: 400;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .sticky {
+      height: 1500vh;
+
+    }
+
+    canvas {
+      position: fixed;
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+
+    .overlay {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      opacity: 0.2;
+      transition: opacity 1s;
+    }
+
+    @keyframes darken {
+      to {
+        opacity: 0.5
+      }
+    }
+
+    #herotext {
+      transition: opacity 1s;
+      opacity: 0;
+      color: white;
+      margin-left: 128px;
+      max-width: 640px;
+      font-size: 50px;
+    }
+    .content{
+      min-height:200vh;
+      background: white;
+      position: relative;
+      z-index:2
+    }
+    .content>div{
+      text-align: center;
+      font-size: 64px;
+    }
+  </style>
+
+  <div class="sticky">
+    <canvas id="hero-lightpass"></canvas>
+    <div class="overlay">
+      <h1 id="herotext"></h1>
+    </div>
+  </div>
+  <div class="content">
+    <div>Test</div>
+  </div>
+  <script>
+    const html = document.documentElement;
+    const canvas = document.getElementById("hero-lightpass");
+    const context = canvas.getContext("2d");
+  
+
+    const frameCount = 297;
+    const currentFrame = index => (
+      `./images/frame (${index}).jpg`
+    )
+    
+
+    const preloadImages = () => {
+      for (let i = 1; i < frameCount; i++) {
+        const img = new Image();
+        img.src = currentFrame(i);
+      }
+    };
+
+    const img = new Image()
+    img.src = currentFrame(1);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    img.onload = function () {
+      context.drawImage(img, 0, 0, canvas.width, canvas.height)
+    }
+
+    const updateImage = index => {
+
+      img.src = currentFrame(index);
+      context.drawImage(img, 0, 0, canvas.width, canvas.height)
+    }
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.body.scrollTop;
+      const maxScrollTop = document.body.scrollHeight - window.innerHeight;
+      const scrollFraction = scrollTop / maxScrollTop;
+      const frameIndex = Math.min(
+        frameCount - 1,
+        Math.ceil(scrollFraction * frameCount)
+      );
+      console.log(frameIndex)
+
+
+      if (frameIndex > 240) {
+          document.querySelector(".overlay").style.opacity = "0.6"
+          document.querySelector("#herotext").style.opacity = "1"
+          document.querySelector("#herotext").innerText = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+      } else if (frameIndex > 192) {
+          document.querySelector(".overlay").style.opacity = "0"
+          document.querySelector("#herotext").style.opacity = "0"
+      } else if (frameIndex > 155) {
+          document.querySelector(".overlay").style.opacity = "0.6"
+          document.querySelector("#herotext").style.opacity = "1"
+          document.querySelector("#herotext").innerText = "Lorem incididunt ea sint mollit aliqua sunt velit non voluptate."
+      } else if (frameIndex > 112) {
+          document.querySelector(".overlay").style.opacity = "0"
+          document.querySelector("#herotext").style.opacity = "0"
+      } else if (frameIndex > 62) {
+          document.querySelector(".overlay").style.opacity = "0.6"
+          document.querySelector("#herotext").style.opacity = "1"
+          document.querySelector("#herotext").innerText = "Dolor ex ullamco pariatur aute dolor fugiat."
+      } else {
+          document.querySelector(".overlay").style.opacity = "0"
+          document.querySelector("#herotext").style.opacity = "0"
+      }
+
+      if (frameIndex == 296) {
+        console.log("fired");
+        document.querySelector(".overlay").style.position = "absolute"
+        document.querySelector("canvas").style.position = "absolute"
+        document.querySelector(".overlay").style.top = window.pageYOffset + "px"
+        document.querySelector("canvas").style.top = window.pageYOffset + "px"
+        document.querySelector("#herotext").style.font="30px Sans-serif, Lato"
+        document.querySelector("#herotext").style.color="red"
+        document.querySelector("#herotext").innerText="Follow Maybe?"
+        
+      } else {
+        console.log("unfired");
+        document.querySelector(".overlay").style.position = "fixed"
+        document.querySelector("canvas").style.position = "fixed"
+        document.querySelector(".overlay").style.top = "0"
+        document.querySelector("canvas").style.top = "0"
+        document.querySelector("#herotext").style.font="40px 'Redacted Script'"
+        document.querySelector("#herotext").style.color="white"
+      }
+
+
+      requestAnimationFrame(() => updateImage(frameIndex + 1))
+    });
+
+    preloadImages()
+  </script>
 </body>
 
 </html>
