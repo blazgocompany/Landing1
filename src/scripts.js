@@ -6,7 +6,7 @@ const html = document.documentElement;
 
     const frameCount = 297;
     const currentFrame = index => (
-      `./frames/frame (${index}).jpg`
+      `./images/frame (${index}).jpg`
     )
     
 
