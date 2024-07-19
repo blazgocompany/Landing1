@@ -1,15 +1,3 @@
-document.body.innerHTML = 
-`
-  <div class="sticky">
-    <canvas id="hero-lightpass"></canvas>
-    <div class="overlay">
-      <h1 id="herotext"></h1>
-    </div>
-  </div>
-  <div class="content">
-    <div>Test</div>
-  </div>
-  `
 
 const html = document.documentElement;
     const canvas = document.getElementById("hero-lightpass");
